@@ -3,9 +3,13 @@ import { runEda } from "../api/eda.api";
 import type { EdaResponse } from "../types/eda";
 
 import GlassCard from "../components/common/GlassCard";
+import CorrelationHeatmap from "../components/eda/CorrelationHeatmap";
 import DatasetOverview from "../components/eda/DatasetOverview";
 import HeadTailTable from "../components/eda/HeadTailTable";
+import HistogramChart from "../components/eda/HistogramChart";
 import NumericSummary from "../components/eda/NumericSummary";
+import ScatterPlot from "../components/eda/Scatterplot";
+
 
 
 export default function EdaPage() {
@@ -64,6 +68,15 @@ export default function EdaPage() {
 
       {/* NUMERIC SUMMARY */}
       {eda && <NumericSummary eda={eda} />}
+
+      {/* CORRELATION HEATMAP */}
+      {eda && <CorrelationHeatmap eda={eda} />}
+
+      {/* HISTOGRAM */}
+      {eda && <HistogramChart eda={eda} />}
+
+      {/* SCATTER PLOT */}
+      {eda && <ScatterPlot eda={eda} />}
 
       {/* HEAD / TAIL */}
       {eda && <HeadTailTable eda={eda} />}
