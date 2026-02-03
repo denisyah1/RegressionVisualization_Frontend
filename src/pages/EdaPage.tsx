@@ -9,14 +9,39 @@ import HeadTailTable from "../components/eda/HeadTailTable";
 import HistogramChart from "../components/eda/HistogramChart";
 import NumericSummary from "../components/eda/NumericSummary";
 import ScatterPlot from "../components/eda/Scatterplot";
+import { useDatasetStore } from "../store/useDatasetStore";
 
+const {
+    file,
+    eda,
+    loading,
+    error,
+    setFile,
+    setEda,
+    setLoading,
+    setError
+    } = useDatasetStore();
+    const handleUpload = async (f: File) => {
+    setFile(f);
+    setLoading(true);
+    setError(null);
 
+    try {
+        const result = await runEda(f);
+        setEda(result);
+    } catch {
+        setError("Failed to analyze CSV");
+    } finally {
+        setLoading(false);
+    }
+};
 
 export default function EdaPage() {
   const [file, setFile] = useState<File | null>(null);
   const [eda, setEda] = useState<EdaResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
 
   const handleUpload = async (f: File) => {
     setFile(f);

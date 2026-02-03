@@ -9,6 +9,45 @@ import NullStrategySelector from "../components/regression/NullStrategySelector"
 import RegressionResult from "../components/regression/RegressionResult";
 import TargetSelector from "../components/regression/TargetSelector";
 import RegressionPlot from "../components/regression/RegressionPlot";
+import { useDatasetStore, useRegressionStore } from "../store";
+const { file, eda } = useDatasetStore();
+
+const {
+  target,
+  features,
+  nullStrategy,
+  result,
+  loading,
+  error,
+  setTarget,
+  setFeatures,
+  setNullStrategy,
+  setResult,
+  setLoading,
+  setError
+} = useRegressionStore();
+
+const handleRun = async () => {
+  if (!file || !eda) return;
+
+  setLoading(true);
+  setError(null);
+
+  try {
+    const res = await runRegression({
+      file,
+      target,
+      features,
+      nullStrategy
+    });
+    setResult(res);
+  } catch {
+    setError("Regression failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
 export default function RegressionPage({
