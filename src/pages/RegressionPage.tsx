@@ -8,6 +8,8 @@ import FeatureSelector from "../components/regression/FeatureSelector";
 import NullStrategySelector from "../components/regression/NullStrategySelector";
 import RegressionResult from "../components/regression/RegressionResult";
 import TargetSelector from "../components/regression/TargetSelector";
+import RegressionPlot from "../components/regression/RegressionPlot";
+
 
 export default function RegressionPage({
   eda,
@@ -93,6 +95,7 @@ export default function RegressionPage({
       </GlassCard>
 
       {result && <RegressionResult result={result} />}
+      {result && <RegressionPlot />}
     </div>
   );
 }

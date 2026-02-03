@@ -1,9 +1,9 @@
-export interface PlotSeries {
+export interface PlotSplit {
   y_actual: number[];
   y_pred: number[];
 }
 
 export interface RegressionPlotResponse {
-  train: PlotSeries;
-  test: PlotSeries;
+  train: PlotSplit;
+  test: PlotSplit;
 }
