@@ -1,0 +1,65 @@
+/* TYPOGRAPHY */
+h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+/* TEXT UTILITIES */
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.text-error {
+  color: var(--danger);
+}
+
+/* BUTTON (GLOBAL STYLE) */
+button {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* FORM */
+select,
+input[type="file"] {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 10px;
+}

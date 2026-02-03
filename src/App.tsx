@@ -1,11 +1,11 @@
 import AppBackground from "./layout/AppBackground";
+import AppRouter from "./router/AppRouter";
 
 export default function App() {
   return (
     <>
       <AppBackground />
 
-      {/* CONTENT LAYER */}
       <div
         style={{
           position: "relative",
@@ -13,7 +13,7 @@ export default function App() {
           minHeight: "100vh"
         }}
       >
-        {/* nanti: router / pages */}
+        <AppRouter />
       </div>
     </>
   );

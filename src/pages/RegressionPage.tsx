@@ -1,76 +1,45 @@
-import { useState } from "react";
-import { runRegression } from "../api/regression.api";
+import { useNavigate } from "react-router-dom";
 import GlassCard from "../components/common/GlassCard";
-import type { EdaResponse } from "../types/eda";
-import type { RegressionResponse } from "../types/regression";
 
+import TargetSelector from "../components/regression/TargetSelector";
 import FeatureSelector from "../components/regression/FeatureSelector";
 import NullStrategySelector from "../components/regression/NullStrategySelector";
 import RegressionResult from "../components/regression/RegressionResult";
-import TargetSelector from "../components/regression/TargetSelector";
 import RegressionPlot from "../components/regression/RegressionPlot";
-import { useDatasetStore, useRegressionStore } from "../store";
-const { file, eda } = useDatasetStore();
+import DownloadModelCard from "../components/regression/DownloadModelCard";
 
-const {
-  target,
-  features,
-  nullStrategy,
-  result,
-  loading,
-  error,
-  setTarget,
-  setFeatures,
-  setNullStrategy,
-  setResult,
-  setLoading,
-  setError
-} = useRegressionStore();
+import { runRegression } from "../api/regression.api";
+import { useDatasetStore } from "../store/useDatasetStore";
+import { useRegressionStore } from "../store/useRegressionStore";
 
-const handleRun = async () => {
-  if (!file || !eda) return;
+export default function RegressionPage() {
+  const navigate = useNavigate();
 
-  setLoading(true);
-  setError(null);
-
-  try {
-    const res = await runRegression({
-      file,
-      target,
-      features,
-      nullStrategy
-    });
-    setResult(res);
-  } catch {
-    setError("Regression failed");
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-
-export default function RegressionPage({
-  eda,
-  file
-}: {
-  eda: EdaResponse;
-  file: File;
-}) {
-  const [target, setTarget] = useState<string>("");
-  const [features, setFeatures] = useState<string[]>([]);
-  const [nullStrategy, setNullStrategy] = useState<"drop" | "mean">("drop");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<RegressionResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { file, eda } = useDatasetStore();
+  const {
+    target,
+    features,
+    nullStrategy,
+    result,
+    loading,
+    error,
+    setTarget,
+    setFeatures,
+    setNullStrategy,
+    setResult,
+    setLoading,
+    setError
+  } = useRegressionStore();
 
   const canRun =
-    target &&
+    !!file &&
+    !!eda &&
+    target.length > 0 &&
     features.length > 0 &&
     !features.includes(target);
 
   const handleRun = async () => {
-    if (!canRun) return;
+    if (!file) return;
 
     setLoading(true);
     setError(null);
@@ -91,50 +60,56 @@ export default function RegressionPage({
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 1200,
-        margin: "0 auto",
-        padding: "48px 24px",
-        display: "flex",
-        flexDirection: "column",
-        gap: 32
-      }}
-    >
+    <div className="page-container">
+      {/* HEADER */}
       <GlassCard>
+        <button onClick={() => navigate("/eda")}>← Back to EDA</button>
         <h1>Regression Setup</h1>
         <p className="text-secondary">
-          Configure your regression model based on EDA insights.
+          Configure and run regression based on EDA insights.
         </p>
       </GlassCard>
 
-      <TargetSelector
-        numericColumns={eda.columns.numeric}
-        value={target}
-        onChange={setTarget}
-      />
+      {/* CONFIG */}
+      {eda && (
+        <>
+          <TargetSelector
+            numericColumns={eda.columns.numeric}
+            value={target}
+            onChange={setTarget}
+          />
 
-      <FeatureSelector
-        numericColumns={eda.columns.numeric}
-        categoricalColumns={eda.columns.categorical}
-        value={features}
-        onChange={setFeatures}
-      />
+          <FeatureSelector
+            numericColumns={eda.columns.numeric}
+            categoricalColumns={eda.columns.categorical}
+            value={features}
+            onChange={setFeatures}
+          />
 
-      <NullStrategySelector
-        value={nullStrategy}
-        onChange={setNullStrategy}
-      />
+          <NullStrategySelector
+            value={nullStrategy}
+            onChange={setNullStrategy}
+          />
 
-      <GlassCard>
-        <button disabled={!canRun || loading} onClick={handleRun}>
-          {loading ? "Running Regression…" : "Run Regression"}
-        </button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </GlassCard>
+          <GlassCard>
+            <button disabled={!canRun || loading} onClick={handleRun}>
+              {loading ? "Running regression…" : "Run Regression"}
+            </button>
+            {error && <p className="text-error">{error}</p>}
+          </GlassCard>
+        </>
+      )}
 
-      {result && <RegressionResult result={result} />}
-      {result && <RegressionPlot />}
+      {/* RESULT */}
+      {result && (
+        <>
+          <RegressionResult result={result} />
+          <RegressionPlot />
+          <DownloadModelCard
+            filename={result.saved_model_filename}
+          />
+        </>
+      )}
     </div>
   );
 }
