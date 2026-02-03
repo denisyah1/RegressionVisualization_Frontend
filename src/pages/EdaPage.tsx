@@ -7,6 +7,7 @@ import DatasetOverview from "../components/eda/DatasetOverview";
 import HeadTailTable from "../components/eda/HeadTailTable";
 import NumericSummary from "../components/eda/NumericSummary";
 
+
 export default function EdaPage() {
   const [file, setFile] = useState<File | null>(null);
   const [eda, setEda] = useState<EdaResponse | null>(null);
