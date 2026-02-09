@@ -4,14 +4,14 @@ import type { RegressionResponse } from "../types/regression";
 interface RegressionState {
   target: string;
   features: string[];
-  nullStrategy: "drop" | "mean";
+  nullStrategy: "drop" | "mean" | "auto";
   result: RegressionResponse | null;
   loading: boolean;
   error: string | null;
 
   setTarget: (v: string) => void;
   setFeatures: (v: string[]) => void;
-  setNullStrategy: (v: "drop" | "mean") => void;
+  setNullStrategy: (v: "drop" | "mean" | "auto") => void;
   setResult: (r: RegressionResponse | null) => void;
   setLoading: (v: boolean) => void;
   setError: (e: string | null) => void;
@@ -25,7 +25,7 @@ interface RegressionState {
 export const useRegressionStore = create<RegressionState>(set => ({
   target: "",
   features: [],
-  nullStrategy: "drop",
+  nullStrategy: "auto",
   result: null,
   loading: false,
   error: null,
@@ -50,7 +50,7 @@ export const useRegressionStore = create<RegressionState>(set => ({
     set({
       target: "",
       features: [],
-      nullStrategy: "drop",
+      nullStrategy: "auto",
       result: null,
       loading: false,
       error: null

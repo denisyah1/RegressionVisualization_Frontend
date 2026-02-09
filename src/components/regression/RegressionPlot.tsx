@@ -5,8 +5,24 @@ import GlassCard from "../common/GlassCard";
 
 type Point = { x: number; y: number };
 
+function toNumber(v: unknown): number | null {
+  if (typeof v === "number" && Number.isFinite(v)) return v;
+  if (typeof v === "string") {
+    const parsed = Number(v);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return null;
+}
+
 function buildPoints(actual: number[], pred: number[]): Point[] {
-  return actual.map((x, i) => ({ x, y: pred[i] }));
+  const points: Point[] = [];
+  for (let i = 0; i < actual.length; i += 1) {
+    const x = toNumber(actual[i]);
+    const y = toNumber(pred[i]);
+    if (x === null || y === null) continue;
+    points.push({ x, y });
+  }
+  return points;
 }
 
 export default function RegressionPlot() {
@@ -40,6 +56,15 @@ export default function RegressionPlot() {
   const train = buildPoints(plot.train.y_actual, plot.train.y_pred);
   const test = buildPoints(plot.test.y_actual, plot.test.y_pred);
   const all = [...train, ...test];
+
+  if (all.length === 0) {
+    return (
+      <GlassCard>
+        <h2>Actual vs Predicted</h2>
+        <p className="text-muted">No valid plot points to display.</p>
+      </GlassCard>
+    );
+  }
 
   const min = Math.min(...all.map(p => Math.min(p.x, p.y)));
   const max = Math.max(...all.map(p => Math.max(p.x, p.y)));

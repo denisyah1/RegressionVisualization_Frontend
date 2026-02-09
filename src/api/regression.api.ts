@@ -4,7 +4,7 @@ export async function runRegression(params: {
   file: File;
   target: string;
   features: string[];
-  nullStrategy: "drop" | "mean";
+  nullStrategy: "drop" | "mean" | "auto";
 }): Promise<RegressionResponse> {
   const fd = new FormData();
   fd.append("file", params.file);

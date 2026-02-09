@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GlassCard from "../components/common/GlassCard";
 
@@ -10,8 +11,10 @@ import RegressionPlot from "../components/regression/RegressionPlot";
 import DownloadModelCard from "../components/regression/DownloadModelCard";
 
 import { runRegression } from "../api/regression.api";
+import { getRegressionPlot } from "../api/regression.plot.api";
 import { useDatasetStore } from "../store/useDatasetStore";
 import { useRegressionStore } from "../store/useRegressionStore";
+import type { RegressionPlotResponse } from "../types/plot";
 
 export default function RegressionPage() {
   const navigate = useNavigate();
@@ -31,6 +34,8 @@ export default function RegressionPage() {
     setLoading,
     setError
   } = useRegressionStore();
+
+  const [plot, setPlot] = useState<RegressionPlotResponse | null>(null);
 
   const canRun =
     !!file &&
@@ -60,10 +65,85 @@ export default function RegressionPage() {
     }
   };
 
-  const handleDownloadPdf = () => {
-    const container = document.getElementById("regression-pdf");
-    if (!container) return;
+  useEffect(() => {
+    if (!result) return;
+    getRegressionPlot()
+      .then(setPlot)
+      .catch(() => setPlot(null));
+  }, [result]);
 
+  const buildPlotSvg = (data: RegressionPlotResponse) => {
+    const toNumber = (v: unknown): number | null => {
+      if (typeof v === "number" && Number.isFinite(v)) return v;
+      if (typeof v === "string") {
+        const parsed = Number(v);
+        if (Number.isFinite(parsed)) return parsed;
+      }
+      return null;
+    };
+
+    const buildPoints = (actual: number[], pred: number[]) => {
+      const points: { x: number; y: number }[] = [];
+      for (let i = 0; i < actual.length; i += 1) {
+        const x = toNumber(actual[i]);
+        const y = toNumber(pred[i]);
+        if (x === null || y === null) continue;
+        points.push({ x, y });
+      }
+      return points;
+    };
+
+    const train = buildPoints(data.train.y_actual, data.train.y_pred);
+    const test = buildPoints(data.test.y_actual, data.test.y_pred);
+    const all = [...train, ...test];
+
+    if (all.length === 0) {
+      return `<p style="color:#64748b">No valid plot points to display.</p>`;
+    }
+
+    const min = Math.min(...all.map(p => Math.min(p.x, p.y)));
+    const max = Math.max(...all.map(p => Math.max(p.x, p.y)));
+    const scale = (v: number) => ((v - min) / (max - min || 1)) * 100;
+
+    const trainCircles = train
+      .map(
+        p =>
+          `<circle cx="${scale(p.x)}" cy="${100 - scale(p.y)}" r="1.4" fill="rgba(125, 211, 252, 0.95)" />`
+      )
+      .join("");
+
+    const testCircles = test
+      .map(
+        p =>
+          `<circle cx="${scale(p.x)}" cy="${100 - scale(p.y)}" r="1.4" fill="rgba(255, 90, 90, 0.95)" />`
+      )
+      .join("");
+
+    return `
+      <div class="chart-wrapper" style="margin-top:16px">
+        <div class="regression-wrapper" style="height:320px">
+          <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none">
+            <rect x="0" y="0" width="100" height="100" fill="#0b1220" />
+            <line x1="0" y1="100" x2="100" y2="0" stroke="rgba(255,255,255,0.5)" stroke-width="0.6" />
+            ${trainCircles}
+            ${testCircles}
+          </svg>
+          <div class="reg-axis-x">Actual</div>
+          <div class="reg-axis-y">Predicted</div>
+        </div>
+      </div>
+      <div class="legend">
+        <span style="color:#7dd3fc">●</span> Train &nbsp;
+        <span style="color:#ff5c7a">●</span> Test &nbsp;
+        <span style="opacity:0.6">— Perfect Fit</span>
+      </div>
+    `;
+  };
+
+  const handleDownloadPdf = () => {
+    if (!result) return;
+
+    const plotHtml = plot ? buildPlotSvg(plot) : "<p style=\"color:#64748b\">Plot not available.</p>";
     const html = `
       <!doctype html>
       <html>
@@ -135,7 +215,23 @@ export default function RegressionPage() {
         </head>
         <body>
           <h1>Regression Report</h1>
-          ${container.innerHTML}
+          <div class="pdf-card">
+            <h2>Best Model Summary</h2>
+            <p><strong>Best Model:</strong> ${result.best_model}</p>
+            ${
+              result.model_comparison[result.best_model]
+                ? `<p>
+                    <strong>Test R²:</strong> ${
+                      result.model_comparison[result.best_model].test_r2 ?? "N/A"
+                    } &nbsp;|&nbsp;
+                    <strong>Test MSE:</strong> ${
+                      result.model_comparison[result.best_model].test_mse ?? "N/A"
+                    }
+                   </p>`
+                : ""
+            }
+          </div>
+          ${plotHtml}
         </body>
       </html>
     `;

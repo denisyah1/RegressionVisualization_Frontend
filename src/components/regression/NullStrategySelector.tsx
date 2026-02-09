@@ -4,12 +4,20 @@ export default function NullStrategySelector({
   value,
   onChange
 }: {
-  value: "drop" | "mean";
-  onChange: (v: "drop" | "mean") => void;
+  value: "drop" | "mean" | "auto";
+  onChange: (v: "drop" | "mean" | "auto") => void;
 }) {
   return (
     <GlassCard>
       <h2>Null Strategy</h2>
+      <label>
+        <input
+          type="radio"
+          checked={value === "auto"}
+          onChange={() => onChange("auto")}
+        />
+        Auto (mean + mode)
+      </label>
       <label>
         <input
           type="radio"
