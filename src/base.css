@@ -1,52 +1,80 @@
-/* TYPOGRAPHY */
+/* ===============================
+   ROOT TOKENS (PASTIKAN ADA)
+================================ */
+:root {
+  --glass-bg: rgba(20, 20, 28, 0.65);
+  --glass-bg-solid: rgba(14, 14, 20, 0.98);
+  --glass-border: rgba(255, 255, 255, 0.25);
+
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+
+  --accent-primary: #00ffd1;
+  --accent-secondary: #8a5cff;
+  --danger: #ff5c7a;
+}
+
+/* ===============================
+   TYPOGRAPHY
+================================ */
 h1 {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 600;
-  margin: 0;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
 h2 {
   font-size: 1.6rem;
   font-weight: 500;
-  margin: 0;
+  color: var(--text-primary);
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 500;
-  margin: 0;
+  color: var(--text-primary);
 }
 
-p {
-  margin: 0;
+p,
+label {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
 }
 
-/* TEXT UTILITIES */
+/* ===============================
+   TEXT UTILITIES
+================================ */
 .text-secondary {
   color: var(--text-secondary);
 }
 
 .text-muted {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-muted);
 }
 
 .text-error {
   color: var(--danger);
 }
 
-/* BUTTON (GLOBAL STYLE) */
+/* ===============================
+   BUTTON (GLOBAL)
+================================ */
 button {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  color: white;
+  color: var(--text-primary);
   padding: 10px 16px;
   border-radius: 12px;
   cursor: pointer;
   backdrop-filter: blur(10px);
+  transition: all 0.15s ease;
 }
 
 button:hover {
   background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 button:disabled {
@@ -54,12 +82,363 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* FORM */
-select,
-input[type="file"] {
+/* ===============================
+   FORM ELEMENTS
+================================ */
+input,
+select {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  color: white;
-  padding: 8px 12px;
+  color: var(--text-primary);
+  padding: 10px 12px;
   border-radius: 10px;
+  backdrop-filter: blur(8px);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(0, 255, 209, 0.25);
+}
+
+/* FILE INPUT */
+input[type="file"] {
+  cursor: pointer;
+}
+
+input::file-selector-button {
+  background: rgba(0, 255, 209, 0.15);
+  border: 1px solid rgba(0, 255, 209, 0.4);
+  color: white;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+/* SELECT + OPTION */
+select {
+  appearance: none;
+}
+
+option {
+  background-color: rgba(15, 15, 22, 0.95);
+  color: white;
+}
+
+option:hover,
+option:checked {
+  background-color: rgba(0, 255, 209, 0.25);
+}
+
+/* ===============================
+   CHART / VISUAL CONTAINERS
+================================ */
+
+/* PRIMARY CHART WRAPPER (PAKAI INI) */
+.chart-wrapper {
+  position: relative;
+  background: var(--glass-bg-solid);
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.12),
+    0 20px 50px rgba(0,0,0,0.75);
+}
+
+/* INNER OUTLINE (DEPTH EFFECT) */
+.chart-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+
+/* SECONDARY CONTAINER (OPTIONAL, BUKAN WAJIB) */
+.chart-container {
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 28, 0.75),
+    rgba(10, 10, 16, 0.85)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+/* ===============================
+   SECTION
+================================ */
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+/* ==============================
+Correlation Matrix Table
+================================ */
+
+.heatmap-wrapper {
+  background: rgba(14, 14, 20, 0.98);
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 16px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.12),
+    0 20px 50px rgba(0,0,0,0.75);
+}
+.heatmap-cell {
+  position: relative;
+  cursor: default;
+}
+
+.heatmap-cell::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0b0b12;
+  color: #fff;
+  padding: 6px 8px;
+  font-size: 11px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.4);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+.heatmap-cell:hover::after {
+  opacity: 1;
+}
+
+/* ===============================
+histogram bars
+================================ */
+
+.histogram-bars {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 180px;
+  margin-top: 16px;
+}
+
+.histogram-bar {
+  flex: 1;
+  position: relative;
+  border-radius: 8px 8px 4px 4px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 255, 209, 0.85),
+    rgba(0, 255, 209, 0.45)
+  );
+  border: 1px solid rgba(255,255,255,0.35);
+}
+
+/* dark tooltip */
+.histogram-bar::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0b0b12;
+  color: #fff;
+  padding: 6px 8px;
+  font-size: 11px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.4);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+.histogram-bar:hover::after {
+  opacity: 1;
+}
+
+/* subtle hover highlight */
+.histogram-bar:hover {
+  filter: brightness(1.15);
+}
+
+/* ===============================
+scatter plot
+================================ */
+
+.scatter-wrapper {
+  position: relative;
+  height: 260px;
+}
+
+.scatter-point {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 90, 90, 0.85);
+  border: 1px solid rgba(255,255,255,0.4);
+  transform: translate(-50%, -50%);
+}
+
+/* hover highlight */
+.scatter-point:hover {
+  background: rgba(255, 90, 90, 1);
+  box-shadow: 0 0 0 4px rgba(255,90,90,0.25);
+}
+
+/* dark tooltip */
+.scatter-point::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0b0b12;
+  color: #fff;
+  padding: 6px 8px;
+  font-size: 11px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.4);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+.scatter-point:hover::after {
+  opacity: 1;
+}
+
+/* axis hint */
+.scatter-axis-x,
+.scatter-axis-y {
+  position: absolute;
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+}
+
+.scatter-axis-x {
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.scatter-axis-y {
+  top: 50%;
+  left: -24px;
+  transform: rotate(-90deg) translateX(-50%);
+  transform-origin: left top;
+}
+
+/* ===============================
+regression plot
+================================ */
+
+.regression-wrapper {
+  position: relative;
+  height: 300px;
+}
+
+/* diagonal perfect-fit */
+.regression-diagonal {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.regression-diagonal::after {
+  content: "";
+  position: absolute;
+  width: 140%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.15),
+    rgba(255,255,255,0.45),
+    rgba(255,255,255,0.15)
+  );
+  top: 50%;
+  left: -20%;
+  transform: rotate(-45deg);
+}
+
+/* points */
+.reg-point {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255,255,255,0.45);
+}
+
+.reg-point.train {
+  background: rgba(125, 211, 252, 0.9);
+}
+
+.reg-point.test {
+  background: rgba(255, 90, 90, 0.9);
+}
+
+.reg-point:hover {
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.2);
+}
+
+/* tooltip */
+.reg-point::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0b0b12;
+  color: white;
+  padding: 6px 8px;
+  font-size: 11px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.4);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+.reg-point:hover::after {
+  opacity: 1;
+}
+
+/* axis hint */
+.reg-axis-x,
+.reg-axis-y {
+  position: absolute;
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+}
+
+.reg-axis-x {
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.reg-axis-y {
+  top: 50%;
+  left: -28px;
+  transform: rotate(-90deg) translateX(-50%);
+  transform-origin: left top;
 }

@@ -22,7 +22,7 @@ export default function RegressionPlot() {
   if (error) {
     return (
       <GlassCard>
-        <h3>Regression Plot</h3>
+        <h2>Actual vs Predicted</h2>
         <p className="text-muted">{error}</p>
       </GlassCard>
     );
@@ -31,7 +31,7 @@ export default function RegressionPlot() {
   if (!plot) {
     return (
       <GlassCard>
-        <h3>Regression Plot</h3>
+        <h2>Actual vs Predicted</h2>
         <p className="text-muted">Loading plot…</p>
       </GlassCard>
     );
@@ -43,65 +43,55 @@ export default function RegressionPlot() {
 
   const min = Math.min(...all.map(p => Math.min(p.x, p.y)));
   const max = Math.max(...all.map(p => Math.max(p.x, p.y)));
-  const scale = (v: number) => ((v - min) / (max - min || 1)) * 100;
+
+  const scale = (v: number) =>
+    ((v - min) / (max - min || 1)) * 100;
 
   return (
     <GlassCard>
       <h2>Actual vs Predicted</h2>
 
-      <div style={{ position: "relative", height: 300, marginTop: 16 }}>
-        {/* perfect fit line */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            top: "50%",
-            width: "100%",
-            height: 1,
-            background: "rgba(255,255,255,0.15)",
-            transform: "rotate(-45deg)",
-            transformOrigin: "center"
-          }}
-        />
+      <div className="chart-wrapper" style={{ marginTop: 16 }}>
+        <div className="regression-wrapper">
+          {/* perfect fit line */}
+          <div className="regression-diagonal" />
 
-        {/* train points */}
-        {train.map((p, i) => (
-          <div
-            key={`train-${i}`}
-            title={`Train\nActual: ${p.x}\nPred: ${p.y}`}
-            style={{
-              position: "absolute",
-              left: `${scale(p.x)}%`,
-              top: `${100 - scale(p.y)}%`,
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "rgba(125,211,252,0.7)"
-            }}
-          />
-        ))}
+          {/* train */}
+          {train.map((p, i) => (
+            <div
+              key={`train-${i}`}
+              className="reg-point train"
+              data-tooltip={`Train | Actual: ${p.x.toFixed(2)} • Pred: ${p.y.toFixed(2)}`}
+              style={{
+                left: `${scale(p.x)}%`,
+                top: `${100 - scale(p.y)}%`
+              }}
+            />
+          ))}
 
-        {/* test points */}
-        {test.map((p, i) => (
-          <div
-            key={`test-${i}`}
-            title={`Test\nActual: ${p.x}\nPred: ${p.y}`}
-            style={{
-              position: "absolute",
-              left: `${scale(p.x)}%`,
-              top: `${100 - scale(p.y)}%`,
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "rgba(255,90,90,0.7)"
-            }}
-          />
-        ))}
+          {/* test */}
+          {test.map((p, i) => (
+            <div
+              key={`test-${i}`}
+              className="reg-point test"
+              data-tooltip={`Test | Actual: ${p.x.toFixed(2)} • Pred: ${p.y.toFixed(2)}`}
+              style={{
+                left: `${scale(p.x)}%`,
+                top: `${100 - scale(p.y)}%`
+              }}
+            />
+          ))}
+
+          {/* axis */}
+          <div className="reg-axis-x">Actual</div>
+          <div className="reg-axis-y">Predicted</div>
+        </div>
       </div>
 
       <div className="text-muted" style={{ marginTop: 12 }}>
         <span style={{ color: "#7dd3fc" }}>●</span> Train &nbsp;
-        <span style={{ color: "#ff5c7a" }}>●</span> Test
+        <span style={{ color: "#ff5c7a" }}>●</span> Test &nbsp;
+        <span style={{ opacity: 0.6 }}>— Perfect Fit</span>
       </div>
     </GlassCard>
   );

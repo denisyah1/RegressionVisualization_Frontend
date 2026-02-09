@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import GlassCard from "../components/common/GlassCard";
 
+import RecommendationCard from "../components/regression/RecommendationCard";
 import TargetSelector from "../components/regression/TargetSelector";
 import FeatureSelector from "../components/regression/FeatureSelector";
 import NullStrategySelector from "../components/regression/NullStrategySelector";
@@ -73,6 +74,10 @@ export default function RegressionPage() {
       {/* CONFIG */}
       {eda && (
         <>
+          {/* 🔥 AUTO RECOMMENDATION */}
+          <RecommendationCard />
+
+          {/* MANUAL SETUP */}
           <TargetSelector
             numericColumns={eda.columns.numeric}
             value={target}
@@ -105,9 +110,7 @@ export default function RegressionPage() {
         <>
           <RegressionResult result={result} />
           <RegressionPlot />
-          <DownloadModelCard
-            filename={result.saved_model_filename}
-          />
+          <DownloadModelCard filename={result.saved_model_filename} />
         </>
       )}
     </div>

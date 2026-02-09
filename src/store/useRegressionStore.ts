@@ -15,6 +15,10 @@ interface RegressionState {
   setResult: (r: RegressionResponse | null) => void;
   setLoading: (v: boolean) => void;
   setError: (e: string | null) => void;
+
+  /** 🔥 NEW */
+  applyRecommendation: (target: string | null, features: string[]) => void;
+
   reset: () => void;
 }
 
@@ -32,6 +36,15 @@ export const useRegressionStore = create<RegressionState>(set => ({
   setResult: result => set({ result }),
   setLoading: loading => set({ loading }),
   setError: error => set({ error }),
+
+  /** ✅ APPLY RECOMMENDATION */
+  applyRecommendation: (target, features) =>
+    set({
+      target: target ?? "",
+      features,
+      result: null,
+      error: null
+    }),
 
   reset: () =>
     set({

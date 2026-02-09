@@ -38,6 +38,7 @@ export default function EdaPage() {
       setLoading(false);
     }
   };
+  <h3 className="section-title">Correlation Matrix</h3>
 
   return (
     <div className="page-container">

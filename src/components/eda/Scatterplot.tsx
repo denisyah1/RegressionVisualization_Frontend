@@ -21,42 +21,58 @@ export default function ScatterPlot({ eda }: Props) {
 
   const xs = points.map(p => p.x);
   const ys = points.map(p => p.y);
-  const minX = Math.min(...xs), maxX = Math.max(...xs);
-  const minY = Math.min(...ys), maxY = Math.max(...ys);
+
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
 
   return (
     <GlassCard>
       <h2>Scatter Plot</h2>
 
+      {/* selectors */}
       <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
         <select value={x} onChange={e => setX(e.target.value)}>
-          {nums.map(n => <option key={n} value={n}>{n}</option>)}
+          {nums.map(n => (
+            <option key={n} value={n}>
+              {n}
+            </option>
+          ))}
         </select>
+
         <select value={y} onChange={e => setY(e.target.value)}>
-          {nums.map(n => <option key={n} value={n}>{n}</option>)}
+          {nums.map(n => (
+            <option key={n} value={n}>
+              {n}
+            </option>
+          ))}
         </select>
       </div>
 
-      <div style={{ position: "relative", height: 240, marginTop: 16 }}>
-        {points.map((p, i) => {
-          const left = ((p.x - minX) / (maxX - minX || 1)) * 100;
-          const top = 100 - ((p.y - minY) / (maxY - minY || 1)) * 100;
-          return (
-            <div
-              key={i}
-              title={`(${p.x}, ${p.y})`}
-              style={{
-                position: "absolute",
-                left: `${left}%`,
-                top: `${top}%`,
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "rgba(255, 90, 90, 0.6)"
-              }}
-            />
-          );
-        })}
+      <div className="chart-wrapper" style={{ marginTop: 16 }}>
+        <div className="scatter-wrapper">
+          {points.map((p, i) => {
+            const left = ((p.x - minX) / (maxX - minX || 1)) * 100;
+            const top = 100 - ((p.y - minY) / (maxY - minY || 1)) * 100;
+
+            return (
+              <div
+                key={i}
+                className="scatter-point"
+                data-tooltip={`${x}: ${p.x.toFixed(2)}, ${y}: ${p.y.toFixed(2)}`}
+                style={{
+                  left: `${left}%`,
+                  top: `${top}%`
+                }}
+              />
+            );
+          })}
+
+          {/* axis labels */}
+          <div className="scatter-axis-x">{x}</div>
+          <div className="scatter-axis-y">{y}</div>
+        </div>
       </div>
     </GlassCard>
   );
