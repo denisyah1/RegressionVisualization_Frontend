@@ -14,7 +14,6 @@ export default function EdaPage() {
   const navigate = useNavigate();
 
   const {
-    file,
     eda,
     loading,
     error,
