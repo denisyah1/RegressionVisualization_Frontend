@@ -20,9 +20,9 @@ React + Vite UI for uploading CSV data, running EDA, configuring regression, and
    ```bash
    npm install
    ```
-2. Configure API base URL (optional).
-   - Default: `VITE_API_BASE_URL=http://localhost:8000` in `.env`.
-   - Vite proxy already forwards `/api` to `http://localhost:8000`.
+2. Configure API base URL.
+   - Copy `.env.example` to `.env` and set your backend URL.
+   - Example: `VITE_API_BASE_URL=http://localhost:8000`
 3. Start dev server.
    ```bash
    npm run dev
@@ -35,3 +35,4 @@ React + Vite UI for uploading CSV data, running EDA, configuring regression, and
 
 ## Notes
 - Make sure the backend is running at `http://localhost:8000` before using the app.
+- For Vercel, set `VITE_API_BASE_URL` in project environment variables.

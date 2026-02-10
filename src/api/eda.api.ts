@@ -1,10 +1,11 @@
 import type { EdaResponse } from "../types/eda";
+import { apiUrl } from "./base";
 
 export async function runEda(file: File): Promise<EdaResponse> {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch("/api/csv/eda", {
+  const res = await fetch(apiUrl("/api/csv/eda"), {
     method: "POST",
     body: formData
   });

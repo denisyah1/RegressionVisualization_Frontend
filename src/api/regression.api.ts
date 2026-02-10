@@ -1,4 +1,5 @@
 import type { RegressionResponse } from "../types/regression";
+import { apiUrl } from "./base";
 
 export async function runRegression(params: {
   file: File;
@@ -12,7 +13,7 @@ export async function runRegression(params: {
   fd.append("feature_columns", params.features.join(","));
   fd.append("null_strategy", params.nullStrategy);
 
-  const res = await fetch("/api/regression", {
+  const res = await fetch(apiUrl("/api/regression"), {
     method: "POST",
     body: fd
   });
