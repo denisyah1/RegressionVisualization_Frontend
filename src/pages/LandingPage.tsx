@@ -9,19 +9,22 @@ export default function LandingPage() {
       <section className="hero">
         <div className="hero-copy">
           <div className="eyebrow">Regression Visualization</div>
-          <h1>Understand your data, then build a clean regression model.</h1>
+          <h1>Turn CSV data into clear regression insights in minutes.</h1>
           <p className="text-secondary">
-            Upload a CSV, explore EDA, choose features and target, run regression,
-            and get an instant plot plus a downloadable model and report.
+            Upload a CSV, explore EDA, pick features + target, and run regression.
+            Get instant plots, model comparison, and exportable results.
           </p>
           <div className="cta-row">
             <button className="btn-primary" onClick={() => navigate("/eda")}>
-              Start With EDA
+              Start with EDA
             </button>
-            <button onClick={() => navigate("/regression")}>
-              Go to Regression
+            <button className="btn-secondary" onClick={() => navigate("/regression")}>
+              Skip to Regression
             </button>
           </div>
+          <p className="cta-helper text-secondary">
+            Recommended flow: EDA → Regression for cleaner models and better plots.
+          </p>
           <div className="pill-row">
             <span className="pill">CSV In</span>
             <span className="pill">EDA Insights</span>
@@ -51,31 +54,31 @@ export default function LandingPage() {
             <div className="step-number">1</div>
             <h3>Upload CSV</h3>
             <p className="text-secondary">
-              Choose a CSV file with a numeric target column and at least a few
-              features. Larger CSVs are supported.
+              Pick a CSV with headers, a numeric target column, and several
+              feature columns. Larger files work fine.
             </p>
           </GlassCard>
           <GlassCard>
             <div className="step-number">2</div>
             <h3>Review EDA</h3>
             <p className="text-secondary">
-              Explore summary statistics, correlations, histograms, and scatter
-              plots to understand your data.
+              Check summary stats, correlations, histograms, and scatter plots
+              to spot patterns and outliers early.
             </p>
           </GlassCard>
           <GlassCard>
             <div className="step-number">3</div>
             <h3>Run Regression</h3>
             <p className="text-secondary">
-              Pick target + features, choose null handling, then run regression.
-              The best model is selected automatically.
+              Choose target + features, select how to handle nulls, and run
+              regression. The best model is selected automatically.
             </p>
           </GlassCard>
           <GlassCard>
             <div className="step-number">4</div>
             <h3>Export Results</h3>
             <p className="text-secondary">
-              View the plot, download the model, and export a PDF report.
+              Review the plot, download the model file, and export a PDF report.
             </p>
           </GlassCard>
         </div>
@@ -87,19 +90,19 @@ export default function LandingPage() {
           <div className="info-card">
             <h3>CSV File</h3>
             <p className="text-secondary">
-              Must be a valid `.csv` file with headers.
+              Use a valid `.csv` file with header rows.
             </p>
           </div>
           <div className="info-card">
             <h3>Numeric Target</h3>
             <p className="text-secondary">
-              Regression requires the target column to be numeric.
+              The target column must be numeric for regression.
             </p>
           </div>
           <div className="info-card">
             <h3>Enough Rows</h3>
             <p className="text-secondary">
-              Make sure you have enough rows for train and test split.
+              Include enough rows for a reliable train/test split.
             </p>
           </div>
           <div className="info-card">
@@ -114,11 +117,9 @@ export default function LandingPage() {
       <section className="section">
         <h2>What Is Regression?</h2>
         <p className="text-secondary">
-          Regression is a supervised learning method that models the relationship
-          between input features (X) and a numeric target (y). The goal is to
-          predict y as accurately as possible for new data. This app compares
-          multiple regression models and selects the best one based on test
-          performance.
+          Regression models the relationship between input features (X) and a
+          numeric target (y). This app compares multiple models and picks the
+          best one based on test performance.
         </p>
       </section>
     </div>

@@ -103,6 +103,49 @@ label {
 }
 
 /* ===============================
+   TABLES
+================================ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(12, 12, 18, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+thead th {
+  text-align: left;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 10px 12px;
+  position: sticky;
+  top: 0;
+}
+
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody td:last-child {
+  border-right: none;
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ===============================
    BUTTON (GLOBAL)
 ================================ */
 button {
@@ -202,7 +245,7 @@ option:checked {
 .chart-wrapper {
   position: relative;
   background: var(--glass-bg-solid);
-  border: 2px solid rgba(255, 255, 255, 0.45);
+  border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 16px;
   padding: 16px;
   box-shadow:
@@ -217,7 +260,9 @@ option:checked {
   inset: 0;
   border-radius: 16px;
   pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.25),
+    inset 0 0 0 2px rgba(0, 255, 209, 0.12);
 }
 
 /* SECONDARY CONTAINER (OPTIONAL, BUKAN WAJIB) */
@@ -227,7 +272,7 @@ option:checked {
     rgba(20, 20, 28, 0.75),
     rgba(10, 10, 16, 0.85)
   );
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.38);
   border-radius: 16px;
   padding: 18px;
 }
@@ -248,7 +293,7 @@ Correlation Matrix Table
 
 .heatmap-wrapper {
   background: rgba(14, 14, 20, 0.98);
-  border: 2px solid rgba(255, 255, 255, 0.45);
+  border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 16px;
   padding: 16px;
   margin-top: 16px;
@@ -256,9 +301,16 @@ Correlation Matrix Table
     0 0 0 1px rgba(255,255,255,0.12),
     0 20px 50px rgba(0,0,0,0.75);
 }
+
+.heatmap-wrapper > div {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+}
 .heatmap-cell {
   position: relative;
   cursor: default;
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .heatmap-cell::after {
