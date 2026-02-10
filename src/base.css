@@ -43,6 +43,14 @@ label {
   color: var(--text-secondary);
 }
 
+.eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 8px;
+}
+
 /* ===============================
    TEXT UTILITIES
 ================================ */
@@ -56,6 +64,42 @@ label {
 
 .text-error {
   color: var(--danger);
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0.35),
+    rgba(255,255,255,0)
+  );
+}
+
+.simple-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-secondary);
+}
+
+.simple-list li {
+  margin-bottom: 6px;
 }
 
 /* ===============================
@@ -80,6 +124,25 @@ button:hover {
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 209, 0.25),
+    rgba(138, 92, 255, 0.25)
+  );
+  border-color: rgba(0, 255, 209, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 255, 209, 0.18);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 209, 0.35),
+    rgba(138, 92, 255, 0.35)
+  );
+  border-color: rgba(0, 255, 209, 0.8);
 }
 
 /* ===============================
